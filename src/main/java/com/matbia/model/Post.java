@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -17,10 +18,11 @@ public class Post {
     private long id;
 
     @Column(name = "title", nullable = false)
+    @NotBlank
     private String title;
 
     @Column(name = "body", nullable = false)
-    @Size(min = 2, max = 65536)
+    @NotBlank
     private String body;
 
     @Column(name="timestamp", nullable = false, updatable = false)
