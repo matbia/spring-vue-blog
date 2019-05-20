@@ -1,0 +1,147 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:v-on="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="templates">
+    <script type="text/x-template" id="home-template">
+        <div class="row">
+            <div class="col">
+                <img class="d-block mx-auto" src="/img/placeholder.png"/>
+                <h1 class="text-center">Home</h1>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-template" id="post-template">
+        <div class="post" :data-id="post.id">
+            <h3>{{ post.title }}</h3>
+            <small>{{ formattedTimestamp }}</small>
+            <div v-html="parsedBody"></div>
+        </div>
+    </script>
+    <script type="text/x-template" id="post-controls-template">
+        <div class="post-controls">
+            <router-link v-if="showReadMore" :to="/read/ + id" class="text-info">Read more</router-link>
+            <span sec:authorize="isAuthenticated()">
+                <span v-if="showReadMore"> || </span>
+                <router-link class="text-warning" :to="{ name: 'edit', params: { id: id }}">Edit</router-link>
+                || <span class="text-danger" v-on:click="remove()">Remove</span>
+            </span>
+        </div>
+    </script>
+    <script type="text/x-template" id="navbar-template">
+        <div>
+            <router-link to="/">
+                <h1 class="text-center text-pink">Example Blog</h1>
+            </router-link>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-2">
+                    <h2 class="text-center"><router-link to="/page/1">Posts</router-link></h2>
+                </div>
+                <div class="col-lg-2">
+                    <h2 class="text-center"><router-link to="/about">About</router-link></h2>
+                </div>
+                <div class="col-lg-2">
+                    <h2 class="text-center"><a href="mailto:mateusz.bialy@pm.me">Contact</a></h2>
+                </div>
+                <div class="col-lg-2">
+                    <h2 class="text-center"><a target="_blank" rel="noopener noreferrer" href="https://github.com//matbia">GitHub</a></h2>
+                </div>
+                <div sec:authorize="isAuthenticated()" class="col-lg-2">
+                    <h2 class="text-center"><router-link to="/create">Create</router-link></h2>
+                </div>
+                <div class="col-lg-2">
+                    <h2 class="text-center"><router-link to="/login">Login</router-link></h2>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-template" id="post-form-template">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-9 mt-1">
+                <h3 class="text-center">{{ msg }}</h3>
+                <form id="post-form" v-on:submit.prevent="submit">
+                    <input type="hidden" v-model="post.id" name="id">
+                    <div class="form-group">
+                        <input type="text"  v-model="post.title" name="title" class="form-control" placeholder="Post title">
+                    </div>
+                    <div class="form-group">
+                        <textarea v-model="post.body" name="body" class="form-control" placeholder="Post body" rows="8"></textarea>
+                        <small class="form-text text-muted">Use markdown to compose your post.</small>
+                    </div>
+                    <button type="submit" class="btn btn-secondary d-block mx-auto">Submit</button>
+                </form>
+                <h2 class="text-center mt-3">Preview</h2>
+                <div class="row">
+                    <div class="col preview" v-html="parsedMarkdown"></div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-template" id="login-form-template">
+        <div class="mt-3 pt-3 text-center">
+            <h3 v-if="$route.query.error" class="text-danger">Invalid login credentials</h3>
+            <div class="row justify-content-md-center mt-3">
+                <div class="col-lg-5">
+                    <form sec:authorize="isAnonymous()" th:action="@{/login}" method="post">
+                        <h1>Login</h1>
+                        <div class="form-group">
+                            <input type="text" name="username" class="form-control" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" class="form-control" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-secondary d-block mx-auto">Login</button>
+                    </form>
+                    <div class="d-block mx-auto text-center mt-3" sec:authorize="isAuthenticated()">
+                        <h2>You are already logged in</h2>
+                        <a href="logout" class="btn btn-sm btn-secondary" role="button">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-template" id="about-template">
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center mt-3">About</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-template" id="return-template">
+        <div class="row">
+            <div class="col-md-2">
+                <span class="text-secondary" v-on:click="goBack">Return</span>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-template" id="page-template">
+        <div>
+            <div v-for="i in posts" class="row">
+                <div class="col">
+                    <post  v-bind:post="i" v-bind:key="i.id"></post>
+                    <post-controls v-bind:id="i.id"  v-bind:showReadMore="true"></post-controls>
+                </div>
+            </div>
+            <page-controls></page-controls>
+        </div>
+    </script>
+    <script type="text/x-template" id="page-controls-template">
+        <div class="row">
+            <div class="col text-center text-pink">
+                <router-link v-if="currPage > 1" :to="{ name: 'page', params: { num: (currPage - 1) }}"><<</router-link>
+                <span>{{ currPage }}/{{ pagesCount }}</span>
+                <router-link v-if="currPage < pagesCount" :to="{ name: 'page', params: { num: (currPage + 1) }}">>></router-link>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-template" id="post-details-template">
+        <div>
+            <return></return>
+            <post v-bind:post="post"></post>
+            <post-controls v-bind:id="id" v-bind:showReadMore="false"></post-controls>
+        </div>
+    </script>
+</div>
+</body>
+</html>

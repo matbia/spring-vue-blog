@@ -1,0 +1,6 @@
+com/matbia/model/Post.class
+com/matbia/Main.class
+com/matbia/controller/BlogRestController.class
+com/matbia/repository/PostRepository.class
+com/matbia/config/SecurityConfig.class
+com/matbia/service/PostService.class
