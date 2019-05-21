@@ -75,7 +75,7 @@ Vue.component('post-controls', {
                 let formData = new FormData();
                 formData.append('id', this.id);
                 fetch('/api/delete', { method: 'POST', headers: { 'X-CSRF-TOKEN': token }, body: formData })
-                    .then(res => document.querySelector('div[data-id="' + id + '"]').parentElement.parentElement.remove())
+                    .then(res => this.$el.parentNode.remove())
                     .catch(error => alert('Error while deleting post'));
 
             }
