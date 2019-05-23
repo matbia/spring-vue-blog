@@ -33,12 +33,12 @@ public class BlogRestController {
     @PostMapping("save")
     public ResponseEntity setPost(@ModelAttribute("post") Post post) {
         return postService.saveOrUpdate(post) ?
-                ResponseEntity.status(HttpStatus.OK).body(post) : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+                ResponseEntity.status(HttpStatus.OK).body(post) : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while saving post");
     }
 
     @PostMapping("delete")
     public ResponseEntity deletePost(@RequestParam("id") long id) {
         return postService.delete(id) ?
-                ResponseEntity.status(HttpStatus.OK).body(id) : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+                ResponseEntity.status(HttpStatus.OK).body(id) : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting post");
     }
 }
