@@ -19,7 +19,7 @@ public class PostService {
      * @return query result wrapped in Optional<T> container
      */
     public Optional<Post> getOne(long id) {
-        return Optional.ofNullable(repository.getOne(id));
+        return repository.findById(id);
     }
 
     /**
