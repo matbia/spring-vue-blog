@@ -23,7 +23,8 @@ Vue.component('post', {
             return new String(this.post.timestamp).split('T')[0]
         },
         parsedBody: function() {
-            return this.post.body ? marked(this.post.body, { sanitize: true }) : this.post.body;
+            if(!this.post.id) return '<h1 class="text-center mt-1">404 - Post not found</h1>'; //ID cannot be undefined
+            return this.post.body ? marked(this.post.body, { sanitize: true }) : '';
         }
     },
     template: '#post-template'
@@ -55,7 +56,7 @@ const postDetails = Vue.component('post-details', {
     props: ['id'],
     data: function() {
         return {
-            post: {}
+            post: null
         }
     },
     mounted: function() {

@@ -138,7 +138,7 @@
     <script type="text/x-template" id="post-details-template">
         <div>
             <return></return>
-            <post v-bind:post="post"></post>
+            <post v-if="post" v-bind:post="post"></post>
             <post-controls v-bind:id="id" v-bind:showReadMore="false"></post-controls>
         </div>
     </script>

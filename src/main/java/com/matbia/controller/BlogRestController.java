@@ -1,5 +1,6 @@
 package com.matbia.controller;
 
+import com.matbia.exception.NotFoundException;
 import com.matbia.model.Post;
 import com.matbia.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api")
@@ -27,7 +29,9 @@ public class BlogRestController {
 
     @GetMapping("read/{id}")
     public Post loadPost(@PathVariable("id") long id) {
-        return postService.getOne(id).orElse(new Post());
+        Optional<Post> post = postService.getOne(id);
+        if(!post.isPresent()) throw new NotFoundException();
+        return post.get();
     }
 
     @PostMapping("save")
