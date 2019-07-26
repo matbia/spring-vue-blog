@@ -69,8 +69,4 @@ public class PostService {
            return false;
         }
     }
-
-    public void flush() {
-        repository.flush();
-    }
 }

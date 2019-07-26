@@ -28,7 +28,6 @@ public class PostServiceTest {
         post.setBody("Mock Body");
 
         postService.saveOrUpdate(post);
-        postService.flush();
 
         assertTrue(postService.delete(post.getId()));
     }
