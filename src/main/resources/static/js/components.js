@@ -112,7 +112,7 @@ const postForm = Vue.component('post-form', {
         },
         submit: function() {
             fetch('/api/save', { method: 'POST', headers: { 'X-CSRF-TOKEN': token }, body: new FormData(document.querySelector('#post-form')) })
-                .then(res => alert('Saved'))
+                .then(res => router.push({ name: 'page', params: { num: 1 }}))
                 .catch(error => alert('Error while saving'));
 
         }
