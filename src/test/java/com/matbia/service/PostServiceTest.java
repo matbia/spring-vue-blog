@@ -18,6 +18,13 @@ public class PostServiceTest {
 
     @Test
     public void saveOrUpdate() {
+        Post post = new Post();
+        post.setTitle("Test title");
+        post.setBody("Test body");
+
+        postService.saveOrUpdate(post);
+        assertTrue(post.getId() > 0);
+
         assertFalse(postService.saveOrUpdate(new Post()));
     }
 
