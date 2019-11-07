@@ -5,7 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "posts")
@@ -26,7 +26,7 @@ public class Post {
 
     @Column(name="timestamp", nullable = false, updatable = false)
     @CreationTimestamp
-    private Date timestamp;
+    private Instant timestamp;
 
     public long getId() {
         return id;
@@ -52,11 +52,11 @@ public class Post {
         this.body = body;
     }
 
-    public Date getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
 }
