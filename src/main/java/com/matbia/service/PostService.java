@@ -23,7 +23,7 @@ public class PostService {
     }
 
     /**
-     * Fetches an collection containing 5 or less entities at selected page offset.
+     * Fetches a collection containing 5 or less entities at selected page offset.
      * @param pageId page offset
      * @return list containing posts with trimmed body field
      */
