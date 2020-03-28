@@ -3,6 +3,7 @@ package com.matbia.service;
 import com.matbia.model.Post;
 import com.matbia.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,11 @@ public class PostService {
      * @return list containing posts with trimmed body field
      */
     public List<Post> getPage(int pageId) {
-        return repository.limit(pageId * 5 - 5);
+        List<Post> pagePosts = repository.findByOrderByTimestampDesc(PageRequest.of(pageId - 1, 5));
+        pagePosts.forEach(p -> {
+            if(p.getBody().length() > 512) p.setBody(p.getBody().substring(0, 512) + "...");
+        });
+        return pagePosts;
     }
 
     /**
