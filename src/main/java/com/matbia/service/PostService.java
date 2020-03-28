@@ -14,6 +14,9 @@ public class PostService {
     @Autowired
     private PostRepository repository;
 
+    private static final int INDEX_POST_MAX_LENGTH = 512;
+    private static final byte POSTS_PER_PAGE = 5;
+
     /**
      * Fetches a single entity from the table by its primary key.
      * @param id primary key
@@ -29,9 +32,9 @@ public class PostService {
      * @return list containing posts with trimmed body field
      */
     public List<Post> getPage(int pageId) {
-        List<Post> pagePosts = repository.findByOrderByTimestampDesc(PageRequest.of(pageId - 1, 5));
+        List<Post> pagePosts = repository.findByOrderByTimestampDesc(PageRequest.of(pageId - 1, POSTS_PER_PAGE));
         pagePosts.forEach(p -> {
-            if(p.getBody().length() > 512) p.setBody(p.getBody().substring(0, 512) + "...");
+            if(p.getBody().length() > INDEX_POST_MAX_LENGTH) p.setBody(p.getBody().substring(0, INDEX_POST_MAX_LENGTH) + "...");
         });
         return pagePosts;
     }
